@@ -31,4 +31,5 @@ public class MediscreenApplication {
 				.apis(RequestHandlerSelectors.basePackage("com.abernathyclinic.mediscreen.controller"))
 				.paths(PathSelectors.any()).build();
 	}
+
 }
