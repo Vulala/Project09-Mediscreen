@@ -1,10 +1,12 @@
-package com.abernathyclinic.mediscreen;
+package com.abernathyclinic.mediscreen.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Custom exception used in the Controller. <br>
+ * Custom exception used in {@link FeignErrorDecoder} <br>
+ * This exception is used to inform that the patient researched couldn't be
+ * found in the database. <br>
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class PatientNotFoundException extends RuntimeException {

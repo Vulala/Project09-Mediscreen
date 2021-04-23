@@ -2,21 +2,15 @@ package com.abernathyclinic.mediscreen.model;
 
 import java.util.UUID;
 
-import javax.validation.constraints.NotBlank;
-
 /**
  * Entity representing a patient. <br>
  */
 public class Patient {
 
 	private UUID uuid;
-	@NotBlank(message = "The last name is mandatory")
 	private String lastName;
-	@NotBlank(message = "The first name is mandatory")
 	private String firstName;
-	@NotBlank(message = "The date of birth is mandatory")
 	private String dateOfBirth;
-	@NotBlank(message = "The gender is mandatory")
 	private String gender;
 	private String homeAddress;
 	private String phoneNumber;
@@ -24,10 +18,8 @@ public class Patient {
 	public Patient() {
 	}
 
-	public Patient(@NotBlank(message = "The last name is mandatory") String lastName,
-			@NotBlank(message = "The first name is mandatory") String firstName,
-			@NotBlank(message = "The date of birth is mandatory") String dateOfBirth,
-			@NotBlank(message = "The gender is mandatory") String gender, String homeAddress, String phoneNumber) {
+	public Patient(String lastName, String firstName, String dateOfBirth, String gender, String homeAddress,
+			String phoneNumber) {
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.dateOfBirth = dateOfBirth;
@@ -90,9 +82,9 @@ public class Patient {
 
 	@Override
 	public String toString() {
-		return "Patient [UUID =" + uuid + ", Last Name :" + lastName + ", First Name :" + firstName
-				+ ", Date Of Birth :" + dateOfBirth + ", Gender :" + gender + ", Home Address :" + homeAddress
-				+ ", Phone Number :" + phoneNumber + "]";
+		return "Patient [UUID: " + uuid + ", Last Name: " + lastName + ", First Name: " + firstName
+				+ ", Date of Birth: " + dateOfBirth + ", Gender: " + gender + ", Home Address: " + homeAddress
+				+ ", Phone Number: " + phoneNumber + "]";
 	}
 
 }

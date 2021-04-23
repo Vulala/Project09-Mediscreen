@@ -2,8 +2,6 @@ package com.abernathyclinic.mediscreen.controller;
 
 import java.util.UUID;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -71,7 +69,7 @@ public class PatientController {
 	 *         message
 	 */
 	@PutMapping("/patient/{uuid}")
-	public String updatePatient(@PathVariable("uuid") UUID uuid, @Valid @RequestBody Patient patient) {
+	public String updatePatient(@PathVariable("uuid") UUID uuid, @RequestBody Patient patient) {
 		return serviceSqlFeignClient.updatePatient(uuid, patient);
 	}
 

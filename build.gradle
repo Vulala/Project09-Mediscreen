@@ -15,8 +15,8 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign' // OpenFeign
-	implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.4.4'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0' // Swagger
 	
@@ -63,7 +63,7 @@ jacocoTestCoverageVerification {
       limit {
         counter = 'LINE'
         value = 'COVEREDRATIO'
-        minimum = 0.45
+        minimum = 0.40
       }
     }
   }
