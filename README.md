@@ -3,8 +3,14 @@
 **REST API** used to communicate with the differents micro-services via **HTTP** request. <br>
 In such, the application provides differents endpoints related to **CRUD** operations wich build-up **HTTP** request targeting the right micro-service.
 
-For more information about the available endpoints, feel free to checkout the swagger's documentation.
+The micro-services availables and needed by the application are the follow:
 
+*  [Service-SQL](https://github.com/Vulala/Project09-Service-SQL "Service-SQL")
+
+
+For more information about the available endpoints, feel free to checkout the swagger's documentation. <br>
+
+------------------------------------------------------------
 
 ## Stack
 
@@ -16,7 +22,6 @@ For more information about the available endpoints, feel free to checkout the sw
 - **JaCoCo 0.8.6**
 - **Swagger 3.0.0**
 - **Gradle 6.8.3**
-
 
 
 ## Installation

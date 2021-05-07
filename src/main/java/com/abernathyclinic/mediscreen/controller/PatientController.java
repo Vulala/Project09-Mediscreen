@@ -1,5 +1,6 @@
 package com.abernathyclinic.mediscreen.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +36,39 @@ public class PatientController {
 	}
 
 	/**
+	 * GET mapping to retrieve a {@link Patient} from the database by using his
+	 * UUID. <br>
+	 * 
+	 * @param UUID : of the patient to retrieve
+	 * @return the patient if present in the database, else throw an error message
+	 */
+	@GetMapping("/patient/{uuid}")
+	public Patient getPatientByUUID(@PathVariable("uuid") UUID uuid) {
+		return serviceSqlFeignClient.getPatientByUUID(uuid);
+
+	}
+
+	/**
 	 * GET mapping to retrieve a {@link Patient} from the database by using his last
 	 * name and first name. <br>
 	 * 
 	 * @param lastName and firstName : of the patient to retrieve
 	 * @return the patient if present in the database, else throw an error message
 	 */
-	@GetMapping("/patient{lastName}{firstName}")
+	@GetMapping("/patient/lastName&firstName")
 	public Patient getPatient(@RequestParam("lastName") String lastName, @RequestParam("firstName") String firstName) {
 		return serviceSqlFeignClient.getPatient(lastName, firstName);
+
+	}
+
+	/**
+	 * GET mapping to retrieve all {@link Patient} from the database. <br>
+	 * 
+	 * @return all the patients if there are some present in the database
+	 */
+	@GetMapping("/patient")
+	public List<Patient> getAllPatients() {
+		return serviceSqlFeignClient.getAllPatients();
 
 	}
 

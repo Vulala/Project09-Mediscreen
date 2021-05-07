@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -53,20 +54,69 @@ class PatientControllerTest {
 		assertEquals(200, status);
 	}
 
-	@DisplayName("GET : /patient{lastName}{firstName}")
+	@DisplayName("GET : /patient/{uuid}")
+	@Test
+	void givenGettingASpecificPatientUsingTheUUID_whenGetPatientByUUID_thenItReturnTheRightPatientFromTheDataBase()
+			throws Exception {
+		// ARRANGE
+		when(serviceSqlFeignClient.getPatientByUUID(any(UUID.class))).thenReturn(new Patient());
+
+		// ACT
+		MvcResult mvcResult = mockMvc.perform(get("/patient/b42a8ef5-8baa-4bc2-89aa-d18cdc3239f9")).andDo(print())
+				.andReturn();
+		int status = mvcResult.getResponse().getStatus();
+
+		// ASSERT
+		assertEquals(200, status);
+		verify(serviceSqlFeignClient, times(1)).getPatientByUUID(any(UUID.class));
+	}
+
+	@DisplayName("GET : /patient/{uuid} but it throw an exception because the entity is not present in the database")
+	@Test
+	void givenGettingASpecificPatientUsingTheUUIDWhoDoesntExist_whenGetPatientByUUID_thenItThrowAPatientNotFoundExceptionWithACorrectHTTPStatusCode()
+			throws Exception {
+		// ARRANGE
+		when(serviceSqlFeignClient.getPatientByUUID(any(UUID.class))).thenReturn(null);
+
+		// ACT
+		MvcResult mvcResult = mockMvc.perform(get("/patient/b42a8ef5-8baa-4bc2-89aa-d18cdc3239f8")).andDo(print())
+				.andReturn();
+		int status = mvcResult.getResponse().getStatus();
+
+		// ASSERT
+		assertEquals(200, status);
+		verify(serviceSqlFeignClient, times(1)).getPatientByUUID(any(UUID.class));
+	}
+
+	@DisplayName("GET : /patient/lastName&firstName")
 	@Test
 	void givenGettingASpecificPatient_whenGetPatient_thenItReturnTheRightPatientFromTheDataBase() throws Exception {
 		// ARRANGE
 		when(serviceSqlFeignClient.getPatient(any(String.class), any(String.class))).thenReturn(new Patient());
 
 		// ACT
-		MvcResult mvcResult = mockMvc.perform(get("/patient?lastName=lastName&firstName=firstName")).andDo(print())
-				.andReturn();
+		MvcResult mvcResult = mockMvc.perform(get("/patient/lastName&firstName?lastName=lastName&firstName=firstName"))
+				.andDo(print()).andReturn();
 		int status = mvcResult.getResponse().getStatus();
 
 		// ASSERT
 		assertEquals(200, status);
 		verify(serviceSqlFeignClient, times(1)).getPatient(any(String.class), any(String.class));
+	}
+
+	@DisplayName("GET : /patient")
+	@Test
+	void givenGettingAllPatients_whenGetAllPatients_thenItReturnAllThePatientsFromTheDataBase() throws Exception {
+		// ARRANGE
+		when(serviceSqlFeignClient.getAllPatients()).thenReturn(new ArrayList<Patient>());
+
+		// ACT
+		MvcResult mvcResult = mockMvc.perform(get("/patient")).andDo(print()).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+
+		// ASSERT
+		assertEquals(200, status);
+		verify(serviceSqlFeignClient, times(1)).getAllPatients();
 	}
 
 	@DisplayName("POST : /patient")

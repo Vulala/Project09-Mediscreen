@@ -1,5 +1,6 @@
 package com.abernathyclinic.mediscreen.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -22,8 +23,14 @@ import com.abernathyclinic.mediscreen.model.Patient;
 @FeignClient(name = "service-sql", url = "localhost:8081")
 public interface ServiceSqlFeignClient {
 
-	@GetMapping(value = "/patient{lastName}{firstName}")
+	@GetMapping("/patient/{uuid}")
+	Patient getPatientByUUID(@PathVariable("uuid") UUID uuid);
+
+	@GetMapping("/patient/lastName&firstName")
 	Patient getPatient(@RequestParam("lastName") String lastName, @RequestParam("firstName") String firstName);
+
+	@GetMapping("/patient")
+	List<Patient> getAllPatients();
 
 	@PostMapping("/patient")
 	String savePatient(@RequestBody Patient patient);
@@ -33,4 +40,5 @@ public interface ServiceSqlFeignClient {
 
 	@DeleteMapping("/patient/{uuid}")
 	String deletePatient(@PathVariable("uuid") UUID uuid);
+
 }
