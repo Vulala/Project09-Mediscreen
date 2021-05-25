@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 import java.util.UUID;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +26,12 @@ import com.abernathyclinic.mediscreen.service.ServiceSqlFeignClient;
  * Important note : This test class is working but nothing is rolledback after
  * each tests because we cannot rollback what is done by an other application.
  * <br>
- * So it might work the first time you launch the test, but will then not
- * anymore, unless you populate the database again (and delete the data posted).
- * <br>
+ * So it might work the first time you launch the test if all the data for the
+ * test are present in the db, but will then not anymore, unless you populate
+ * the database again (and delete the data posted). <br>
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-@Disabled
 class PatientControllerIT {
 
 	@Autowired
@@ -65,8 +63,7 @@ class PatientControllerIT {
 	void givenGettingASpecificPatientUsingTheUUID_whenGetPatientByUUID_thenItReturnTheRightPatientFromTheDataBase()
 			throws Exception {
 		// ACT
-		MvcResult mvcResult = mockMvc.perform(get("/patient/b42a8ef5-8baa-4bc2-89aa-d18cdc3239f9")).andDo(print())
-				.andReturn();
+		MvcResult mvcResult = mockMvc.perform(get("/patient/" + uuidOfThePatientInDB)).andDo(print()).andReturn();
 		int status = mvcResult.getResponse().getStatus();
 
 		// ASSERT
@@ -78,8 +75,7 @@ class PatientControllerIT {
 	void givenGettingASpecificPatientUsingTheUUIDWhoDoesntExist_whenGetPatientByUUID_thenItThrowAPatientNotFoundExceptionWithACorrectHTTPStatusCode()
 			throws Exception {
 		// ACT
-		MvcResult mvcResult = mockMvc.perform(get("/patient/b42a8ef5-8baa-4bc2-89aa-d18cdc3239f8")).andDo(print())
-				.andReturn();
+		MvcResult mvcResult = mockMvc.perform(get("/patient/" + UUID.randomUUID())).andDo(print()).andReturn();
 		int status = mvcResult.getResponse().getStatus();
 
 		// ASSERT
@@ -126,8 +122,8 @@ class PatientControllerIT {
 	@Test
 	void givenSavingAPatient_whenSavePatient_thenItSaveThePatientInTheDataBase() throws Exception {
 		// ACT
-		MvcResult mvcResult = mockMvc.perform(
-				post("/patient").contentType(MediaType.APPLICATION_JSON).content("{\"lastName\": \"nameLast\"}"))
+		MvcResult mvcResult = mockMvc.perform(post("/patient").contentType(MediaType.APPLICATION_JSON).content(
+				"{\"lastName\": \"nameLast\", \"firstName\": \"nameFirst\", \"gender\": \"Trinary\", \"dateOfBirth\": \"dateOfBirth\"}"))
 				.andDo(print()).andReturn();
 		MockHttpServletResponse response = mvcResult.getResponse();
 
@@ -140,9 +136,10 @@ class PatientControllerIT {
 	@Test
 	void givenUpdatingAPatient_whenUpdatePatient_thenItUpdateThePatientInTheDataBase() throws Exception {
 		// ACT
-		MvcResult mvcResult = mockMvc.perform(put("/patient/" + uuidOfThePatientInDB)
-				.contentType(MediaType.APPLICATION_JSON).content("{\"lastName\": \"nameLast\"}")).andDo(print())
-				.andReturn();
+		MvcResult mvcResult = mockMvc.perform(put("/patient/" + UUID.fromString("7798a960-ee17-4b83-b355-fc3549322cc6"))
+				.contentType(MediaType.APPLICATION_JSON).content(
+						"{\"lastName\": \"lastNamePutSuccess\", \"firstName\": \"firstNamePutSuccess\", \"gender\": \"Trinary\", \"dateOfBirth\": \"dateOfBirth\"}"))
+				.andDo(print()).andReturn();
 		MockHttpServletResponse response = mvcResult.getResponse();
 
 		// ASSERT
@@ -169,7 +166,8 @@ class PatientControllerIT {
 	void givenDeletingAPatient_whenDeletePatient_thenItDeleteThePatientInTheDataBase() throws Exception {
 		// ACT
 		MvcResult mvcResult = mockMvc
-				.perform(delete("/patient/" + uuidOfThePatientInDB).contentType(MediaType.APPLICATION_JSON))
+				.perform(delete("/patient/" + UUID.fromString("097252bc-12c4-41ac-b831-8b9b8e5bba59"))
+						.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print()).andReturn();
 		MockHttpServletResponse response = mvcResult.getResponse();
 
