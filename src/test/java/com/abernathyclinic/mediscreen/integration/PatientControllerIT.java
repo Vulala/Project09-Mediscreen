@@ -1,4 +1,4 @@
-package com.abernathyclinic.mediscreen;
+package com.abernathyclinic.mediscreen.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,8 +27,8 @@ import com.abernathyclinic.mediscreen.service.ServiceSqlFeignClient;
  * each tests because we cannot rollback what is done by an other application.
  * <br>
  * So it might work the first time you launch the test if all the data for the
- * test are present in the db, but will then not anymore, unless you populate
- * the database again (and delete the data posted). <br>
+ * test are present in the DB, but will then not anymore, unless you populate
+ * the database again with the value deleted (and delete the data posted). <br>
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,8 +39,6 @@ class PatientControllerIT {
 
 	@Autowired
 	private ServiceSqlFeignClient serviceSqlFeignClient;
-
-	private UUID uuidOfThePatientInDB = UUID.fromString("b42a8ef5-8baa-4bc2-89aa-d18cdc3239f9");
 
 	@DisplayName("Injected Components Are Rightly Setup")
 	@Test
@@ -63,7 +61,9 @@ class PatientControllerIT {
 	void givenGettingASpecificPatientUsingTheUUID_whenGetPatientByUUID_thenItReturnTheRightPatientFromTheDataBase()
 			throws Exception {
 		// ACT
-		MvcResult mvcResult = mockMvc.perform(get("/patient/" + uuidOfThePatientInDB)).andDo(print()).andReturn();
+		MvcResult mvcResult = mockMvc
+				.perform(get("/patient/" + UUID.fromString("b42a8ef5-8baa-4bc2-89aa-d18cdc3239f9"))).andDo(print())
+				.andReturn();
 		int status = mvcResult.getResponse().getStatus();
 
 		// ASSERT
