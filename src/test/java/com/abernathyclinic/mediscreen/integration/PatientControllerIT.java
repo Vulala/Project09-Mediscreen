@@ -20,8 +20,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.abernathyclinic.mediscreen.service.ServiceSqlFeignClient;
-
 /**
  * Important note : This test class is working but nothing is rolledback after
  * each tests because we cannot rollback what is done by an other application.
@@ -37,14 +35,10 @@ class PatientControllerIT {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Autowired
-	private ServiceSqlFeignClient serviceSqlFeignClient;
-
 	@DisplayName("Injected Components Are Rightly Setup")
 	@Test
 	void injectedComponentsAreRightlySetup() {
 		assertThat(mockMvc).isNotNull();
-		assertThat(serviceSqlFeignClient).isNotNull();
 	}
 
 	@DisplayName("GET : /")

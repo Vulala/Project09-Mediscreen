@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.abernathyclinic.mediscreen.exception.PatientNotFoundException;
-
 /**
  * LoggingAspect is a class which use Spring Boot AOP dependency. <br>
  * AOP is used here to handle all the logging for the controller package. <br>
@@ -43,13 +41,12 @@ public class LoggingAspect {
 		logger.info("The execution has ended successfully");
 	}
 
-	@AfterThrowing(pointcut = "controller()", throwing = "patientNotFoundException")
-	public void logAfterTheMethodEndWithAnError(JoinPoint joinPoint,
-			PatientNotFoundException patientNotFoundException) {
+	@AfterThrowing(pointcut = "controller()", throwing = "exception")
+	public void logAfterTheMethodEndWithAnError(JoinPoint joinPoint, Exception exception) {
 		Signature signature = joinPoint.getSignature();
 		String className = signature.getDeclaringType().getSimpleName();
 		String methodName = signature.getName();
 
-		logger.info("The execution of {} in the {} class has failed", methodName, className, patientNotFoundException);
+		logger.info("The execution of {} in the {} class has failed", methodName, className, exception);
 	}
 }

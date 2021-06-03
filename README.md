@@ -6,6 +6,8 @@ In such, the application provides differents endpoints related to **CRUD** opera
 The micro-services availables and needed by the application are the follow:
 
 *  [Service-SQL](https://github.com/Vulala/Project09-Service-SQL "Service-SQL")
+*  [Service-NoSQL](https://github.com/Vulala/Project09-Service-NoSQL "Service-NoSQL")
+*  [Service-Diabetes](https://github.com/Vulala/Project09-Service-Diabetes "Service-Diabetes")
 
 
 For more information about the available endpoints, feel free to checkout the swagger's documentation. <br>
@@ -33,6 +35,7 @@ The application is quite easy to install; it only needs to be imported in your p
 
 ## Test
 
+The application is entirely tested and reach a **90%** + code coverage. <br>
 You can do end-to-end tests by doing HTTP request with the differents endpoints provided, f.e with Postman. <br>
 If you wish to add or tweak some tests, you can find them under the traditional **src/test/java** package. <br>
 
