@@ -21,3 +21,9 @@ services:
   image: servicenosql
   build: ./Service-NoSQLContainer
   network_mode: "host"
+
+ service-diabetes:
+  container_name : service-diabetes
+  image: servicediabetes
+  build: ./Service-DiabetesContainer
+  network_mode: "host"
